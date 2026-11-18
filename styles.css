@@ -7,7 +7,59 @@ button{cursor:pointer;border:0;background:none}
 .brown{color:var(--brown)}.muted{color:var(--brown)}.center{text-align:center}.small{font-size:.85rem}.big{font-size:1.4rem;font-weight:700}
 h1,h2,h3{font-family:Poppins,Inter,sans-serif}
 .error{color:#b3261e;font-size:.85rem;min-height:1.1em;text-align:center;margin:6px 0}
-.logo{font-weight:700;font-size:1.6rem;color:var(--tan)}.logo.sm{font-size:1.5rem}
+/* LOGO KERETA KOPI */
+.logo{
+  font-weight:700;
+  font-size:1.6rem;
+  color:var(--tan);
+}
+
+.logo.sm{
+  font-size:1.5rem;
+}
+
+/* Logo gambar dan nama brand */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.brand img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+}
+
+.brand span{
+  font-size:1.8rem;
+  font-weight:800;
+  color:var(--tan);
+  font-family:Poppins, sans-serif;
+}
+
+/* Logo pada halaman login */
+.login-brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.login-brand img{
+  width:65px;
+  height:65px;
+  object-fit:contain;
+}
+
+.login-brand span{
+  font-family:Poppins,sans-serif;
+  font-size:1.7rem;
+  font-weight:700;
+  color:var(--brown);
+}
 .btn{padding:14px 28px;border-radius:999px;font-weight:600}
 .btn.primary{background:var(--brown);color:#fff}
 .btn.soft{background:var(--tan);color:var(--brown)}
@@ -131,5 +183,24 @@ td{padding:14px 12px;border-bottom:1px solid #ccc;vertical-align:top}
  .order-layout,.pay-layout,.recap-grid,.menu-layout{grid-template-columns:1fr}
  .hero,.features{padding-left:24px;padding-right:24px}.view{padding:24px 16px}.topbar{padding:12px 16px}
  nav button{padding:8px 14px;font-size:1rem}.cart{position:static;min-height:0}
+}
+@media(max-width:600px){
+  .brand img{
+    width:45px;
+    height:45px;
+  }
+
+  .brand span{
+    font-size:1.4rem;
+  }
+
+  .login-brand img{
+    width:52px;
+    height:52px;
+  }
+
+  .login-brand span{
+    font-size:1.4rem;
+  }
 }
 @media print{body *{visibility:hidden}.receipt,.receipt *{visibility:visible}.receipt{position:fixed;inset:0;background:#fff}}
