@@ -133,12 +133,23 @@ const TrxAPI = {
     if (error) throw error;
     return data.map(toTrx);
   },
-  async add(row) {
-    const { data, error } = await db.from('transaksi').insert(row).select().single();
-    if (error) throw error;
-    return toTrx(data);
-  },
-};
+async add(row) {
+  console.log('DATA TRANSAKSI:', row);
+
+  const { data, error } = await db
+    .from('transaksi')
+    .insert(row)
+    .select()
+    .single();
+
+  if (error) {
+    alert('Gagal menyimpan: ' + error.message);
+    console.error('ERROR SUPABASE:', error);
+    throw error;
+  }
+
+  return toTrx(data);
+},
 
 async function loadDatabase() {
   try {
