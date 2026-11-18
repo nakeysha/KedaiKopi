@@ -14,8 +14,11 @@ const load = (k, d) => { try { return JSON.parse(LS.get(k)) ?? d; } catch { retu
 const save = (k, v) => LS.set(k, JSON.stringify(v));
 
 /* ===== DATA AWAL ===== */
-// Foto otomatis dicari di images/<nama-huruf-kecil-pakai-strip>.png
-const P = (n, c, p) => { const id = n.toLowerCase().replace(/\W+/g, '-'); return { id, name: n, cat: c, price: p, ok: true, img: `images/${id}.png` }; };
+// Foto produk otomatis dicari di folder images
+const P = (n, c, p) => {
+  const id = n.toLowerCase().replace(/\W+/g, '-');
+  return { id, name: n, cat: c, price: p, ok: true, img: `images/${id}` };
+};
 const DEFAULT_MENU = [
   P('Americano','Kopi',12000), P('Berry Americano','Kopi',17000), P('Orange Americano','Kopi',17000),
   P('Cappucino','Kopi',12000), P('Butterscotch Latte','Kopi',17000), P('Spanish Latte','Kopi',17000),
@@ -36,8 +39,31 @@ const PIN = '1234'; // ganti PIN pemilik di sini
 // Jika data bawaan menu diubah lagi, naikkan v2 menjadi v3 agar browser memuat data terbaru
 let menu = load('kk_menu_v2', DEFAULT_MENU), trx = load('kk_trx', []);
 let cart = {}, cat = 'Kopi', method = null, lastTx = null, pin = '', editId = null, fImg = '';
-const IMG = src => src ? `<img src="${src}" alt="" onerror="this.replaceWith('☕')">` : '☕';
+const IMG = src => {
+  if (!src) return '☕';
 
+  // Foto yang diunggah melalui form menu
+  if (src.startsWith('data:')) {
+    return `<img src="${src}" alt="" onerror="this.replaceWith('☕')">`;
+  }
+
+  // Mencoba JPG, JPEG, lalu PNG
+  const base = src.replace(/\.(jpg|jpeg|png)$/i, '');
+
+  return `<img src="${base}.jpg" alt=""
+    data-img-try="0"
+    onerror="
+      const exts = ['.jpg', '.jpeg', '.png'];
+      const i = Number(this.dataset.imgTry || 0) + 1;
+      this.dataset.imgTry = i;
+      if (i < exts.length) {
+        this.src = '${base}' + exts[i];
+      } else {
+        this.replaceWith(document.createTextNode('☕'));
+      }
+    ">
+  `;
+};
 /* ===== NAVIGASI ===== */
 function screen(id) { $$('.screen').forEach(s => s.classList.toggle('hidden', s.id !== id)); window.scrollTo(0, 0); }
 function view(v) {
