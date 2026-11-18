@@ -26,7 +26,7 @@ const DEFAULT_MENU = [
   P('Pistachio Latte','Kopi',17000), P('Matcha Espresso','Kopi',22000), P('Sea Salt Americano','Kopi',17000),
   P('Butterscotch Sea Salt Latte','Kopi',22000), P('Caramel Sea Salt Latte','Kopi',22000),
   P('Matcha Espresso Sea Salt Latte','Kopi',25000),
-  P('Chocolate','Non-Kopi',12000), P('Hazelnut','Non-Kopi',17000), P('Thai Tea','Non-Kopi',12000),
+  P('Chocolatte','Non-Kopi',12000), P('Hazelnut','Non-Kopi',17000), P('Thai Tea','Non-Kopi',12000),
   P('Taro','Non-Kopi',17000), P('Cotton Candy','Non-Kopi',17000), P('Milk Tea','Non-Kopi',17000),
   P('Oreo Crumble','Non-Kopi',17000), P('Strawberry Latte','Non-Kopi',17000), P('Matcha Latte','Non-Kopi',17000),
   P('Oreo Matcha Latte','Non-Kopi',22000), P('Caramel Matcha Latte','Non-Kopi',22000),
