@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kereta Kopi - Kasir Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- LANDING -->
+<section id="landing" class="screen">
+  <div class="hero">
+    <div class="logo">Kereta Kopi</div>
+    <h3 class="tag">Pemberhentian Favoritmu</h3>
+    <h1>Kasir digital untuk Kereta Kopi</h1>
+    <p>Catat pesanan, terima pembayaran QRIS atau Tunai, dan lihat rekap penjualan harian dalam satu website.</p>
+    <div class="row">
+      <button class="btn primary" id="btnMasuk">Masuk sebagai Pemilik</button>
+      <button class="btn outline-light" id="btnFitur">Lihat Fitur</button>
+    </div>
+  </div>
+  <div class="features" id="fitur">
+    <h2>Semua yang dibutuhkan di kasir</h2>
+    <div class="grid4">
+      <div class="card"><h4>Input pesanan cepat</h4><p>Ketuk menu untuk menambah pesanan, total terhitung otomatis.</p></div>
+      <div class="card"><h4>QRIS atau Tunai</h4><p>Dua pilihan pembayaran, kembalian tunai dihitung otomatis.</p></div>
+      <div class="card"><h4>Rekap &amp; histori harian</h4><p>Lihat produk terjual, transaksi, dan pendapatan per hari.</p></div>
+      <div class="card"><h4>Kelola menu</h4><p>Atur daftar produk, harga, dan ketersediaan.</p></div>
+    </div>
+  </div>
+  <footer>Kereta Kopi &nbsp; Pemberhentian Favoritmu</footer>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="screen hidden">
+  <header class="topbar"><div class="logo sm">Kereta Kopi</div></header>
+  <div class="pin-card">
+    <h2>Kereta Kopi</h2>
+    <p class="muted">Masukkan PIN Pemilik</p>
+    <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+    <div class="keypad" id="keypad"></div>
+    <p class="error" id="pinError"></p>
+    <button class="btn primary block" id="btnLogin">Masuk</button>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="app" class="screen hidden">
+  <header class="topbar">
+    <div class="logo sm">Kereta Kopi</div>
+    <nav id="nav">
+      <button data-view="order" class="active">Pesanan</button>
+      <button data-view="recap">Rekap</button>
+      <button data-view="menu">Menu</button>
+      <button id="btnLogout" title="Keluar">Keluar</button>
+    </nav>
+  </header>
+
+  <!-- PESANAN -->
+  <main id="v-order" class="view order-layout">
+    <div>
+      <div class="chips" id="chips">
+        <button data-cat="Semua">Semua</button>
+        <button data-cat="Kopi" class="active">Kopi</button>
+        <button data-cat="Non-Kopi">Non-Kopi</button>
+        <button data-cat="Toppings">Toppings</button>
+      </div>
+      <div class="products" id="products"></div>
+    </div>
+    <aside class="panel cart">
+      <h3 class="brown">Pesanan Baru</h3>
+      <input id="custName" class="field pill" placeholder="Atas nama:" autocomplete="off">
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-foot">
+        <div><span class="brown big">Total</span><div class="total" id="cartTotal">Rp 0</div></div>
+        <button class="btn soft" id="btnPay" disabled>Pembayaran</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- PEMBAYARAN -->
+  <main id="v-pay" class="view pay-layout hidden">
+    <div class="panel">
+      <h3>Ringkasan Pesanan</h3>
+      <div class="brown" id="payName">Atas nama: -</div>
+      <div class="lines" id="payLines"></div>
+      <div class="brown">Total Pembelian</div>
+      <div class="total" id="payTotal">Rp 0</div>
+    </div>
+    <div>
+      <h2>Pilih Metode Pembayaran</h2>
+      <div class="methods">
+        <button class="method" data-m="QRIS">QRIS</button>
+        <button class="method" data-m="Tunai">Tunai</button>
+      </div>
+        <div class="panel hidden" id="boxQris">
+        <div class="qr"><img src="images/qris.png" alt="QRIS Kereta Kopi"></div>
+        <div class="brown center">Total yang harus dibayar</div>
+        <div class="total center" id="qrisTotal">Rp 0</div>
+        <p class="muted center small">Pembeli scan QRIS lalu memasukkan nominal sesuai total.</p>
+      </div>
+      <div class="panel hidden" id="boxCash">
+        <label class="small brown">Uang diterima</label>
+        <input id="cashIn" class="field big-in" inputmode="numeric" placeholder="Rp 0" autocomplete="off">
+        <hr>
+        <div class="field change"><span>Kembalian</span><b id="cashChange">Rp 0</b></div>
+        <p class="error" id="cashErr"></p>
+      </div>
+      <button class="btn primary block hidden" id="btnConfirm">Konfirmasi Pembayaran Diterima</button>
+    </div>
+  </main>
+
+  <!-- BERHASIL -->
+  <main id="v-done" class="view hidden">
+    <div class="panel done">
+      <div class="check">✓</div>
+      <h2>Pembayaran Berhasil</h2>
+      <p class="brown center" id="doneTime">Tersimpan di Riwayat</p>
+      <div class="receipt" id="receipt"></div>
+      <div class="row">
+        <button class="btn outline" id="btnPrint">Cetak Struk</button>
+        <button class="btn primary grow" id="btnNew">Pesanan Baru</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- REKAP -->
+  <main id="v-recap" class="view hidden">
+    <div class="row between">
+      <div><h1 class="h-sm" id="recapTitle">Rekap Hari Ini</h1><div class="brown" id="recapDate"></div></div>
+      <input type="date" id="recapDay" class="btn outline">
+    </div>
+    <div class="grid3">
+      <div class="card"><span>Produk Terjual</span><b id="rItems">0</b></div>
+      <div class="card"><span>Transaksi</span><b id="rTrx">0</b></div>
+      <div class="card"><span>Pendapatan</span><b id="rRev">Rp 0</b></div>
+    </div>
+    <div class="recap-grid">
+      <div class="panel">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Waktu</th><th>Pesanan</th><th>Total</th><th>Metode</th></tr></thead>
+          <tbody id="rTable"></tbody>
+        </table></div>
+      </div>
+      <div class="stack">
+  <div class="panel">
+    <h3>Rincian Produk Terjual</h3>
+    <div class="sold" id="rItemList"></div>
+  </div>
+   <div class="panel">
+     <h3>Pendapatan per metode</h3>
+     <div class="brown small">Dalam ribu rupiah</div>
+     <div class="chart" id="chart"></div>
+  </div>
+</div>
+    </div>
+  </main>
+
+  <!-- KELOLA MENU -->
+  <main id="v-menu" class="view hidden">
+    <div class="menu-layout">
+      <div class="panel">
+        <div class="row between"><h2>Kelola Menu</h2><span class="small brown" id="mCount"></span></div>
+        <div id="mList"></div>
+      </div>
+      <div class="panel">
+        <h2 id="formTitle">Tambah Produk</h2>
+        <label class="small brown">Nama Produk</label><input id="fName" class="field">
+        <label class="small brown">Harga (Rp)</label><input id="fPrice" class="field" inputmode="numeric">
+        <label class="small brown">Kategori</label>
+        <select id="fCat" class="field"><option>Kopi</option><option>Non-Kopi</option><option>Toppings</option></select>
+        <label class="upload" for="fFile"><span id="fFileLbl">Unggah Foto Produk</span></label>
+        <input type="file" id="fFile" accept="image/*" hidden>
+        <button class="btn gold block" id="btnSave">Simpan Produk</button>
+        <button class="btn outline block hidden" id="btnDel">Hapus Produk</button>
+        <button class="btn outline block hidden" id="btnCancel">Batal Edit</button>
+      </div>
+    </div>
+  </main>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
