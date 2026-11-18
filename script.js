@@ -17,7 +17,9 @@ const SUPABASE_URL = 'https://pkjrozyoknngefxnlikc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_OyTdRRjTU78o7jK7iLm7AA_mnFaUv4k';
 const DEFAULT_PIN = '1234'; // PIN pemilik (sementara; lihat catatan keamanan)
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase?.createClient
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
 
 /* ========== 2. HELPER UMUM ========== */
 const $  = s => document.querySelector(s);
@@ -140,15 +142,35 @@ const TrxAPI = {
 
 async function loadDatabase() {
   try {
+    if (!db) throw new Error('Supabase belum tersedia');
+
     menu = await MenuAPI.list();
-    if (!menu.length) menu = await MenuAPI.seed(); // isi menu bawaan kalau DB kosong
+
+    if (!menu.length) {
+      menu = await MenuAPI.seed();
+    }
+
     trx = await TrxAPI.list();
-    renderProducts();
-    renderCart();
+
   } catch (err) {
-    console.error('Gagal mengambil data:', err);
-    alert('Gagal menghubungkan database. Periksa koneksi Supabase.');
+    console.error('Database bermasalah:', err);
+
+    // Gunakan menu bawaan agar aplikasi tetap interaktif
+    menu = DEFAULT_MENU.map((p, i) => ({
+      id: 'local-' + (i + 1),
+      name: p.nama,
+      price: p.harga,
+      cat: p.kategori,
+      img: p.foto_url,
+      ok: true
+    }));
+
+    trx = [];
   }
+
+  // Tetap tampilkan produk dan keranjang
+  renderProducts();
+  renderCart();
 }
 
 /* ========== 5. TAMPILAN UMUM ========== */
