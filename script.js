@@ -158,15 +158,15 @@ const IMG_EXTS = ['.jpg', '.jpeg', '.png'];
 
 const IMG = src => {
   if (!src) return '☕';
-  if (src.startsWith('data:')) return `<img src="${src}" alt="">`;
+  if (src.startsWith('data:')) return `<img data-pic src="${src}" alt="">`;
   const base = src.replace(/\.(jpg|jpeg|png)$/i, '');
-  return `<img src="${esc(base)}.jpg" data-base="${esc(base)}" data-try="0" alt="">`;
+  return `<img data-pic src="${esc(base)}.jpg" data-base="${esc(base)}" data-try="0" alt="">`;
 };
 
-// Satu handler untuk semua gambar yang gagal dimuat
+// Handler gambar gagal dimuat (hanya untuk foto produk, bukan logo/QRIS)
 document.addEventListener('error', e => {
   const img = e.target;
-  if (img.tagName !== 'IMG') return;
+  if (img.tagName !== 'IMG' || !img.hasAttribute('data-pic')) return;
   const next = Number(img.dataset.try || 0) + 1;
   if (img.dataset.base !== undefined && next < IMG_EXTS.length) {
     img.dataset.try = next;
