@@ -31,7 +31,7 @@ Kereta Kopi merupakan aplikasi kasir digital berbasis website yang dirancang unt
 
 Website dapat diakses melalui GitHub Pages:
 
-[Kereta Kopi – Kasir Digital](https://nakeysha.github.io/KedaiKopi/)
+[Kereta Kopi – Kasir Digital](https://nakeysha.github.io/KeretaKopi/)
 
 ## Pengembang
 Kereta Kopi – Kasir Digital
