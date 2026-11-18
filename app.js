@@ -133,57 +133,33 @@ const TrxAPI = {
     if (error) throw error;
     return data.map(toTrx);
   },
-async add(row) {
-  console.log('DATA TRANSAKSI:', row);
-
-  const { data, error } = await db
-    .from('transaksi')
-    .insert(row)
-    .select()
-    .single();
-
-  if (error) {
-    alert('Gagal menyimpan: ' + error.message);
-    console.error('ERROR SUPABASE:', error);
-    throw error;
-  }
-
-  return toTrx(data);
-},
+  async add(row) {
+    const { data, error } = await db.from('transaksi').insert(row).select().single();
+    if (error) {
+      console.error('ERROR SUPABASE:', error);
+      throw new Error(error.message);
+    }
+    return toTrx(data);
+  },
+};
 
 async function loadDatabase() {
   try {
     if (!db) throw new Error('Supabase belum tersedia');
-
     menu = await MenuAPI.list();
-
-    if (!menu.length) {
-      menu = await MenuAPI.seed();
-    }
-
+    if (!menu.length) menu = await MenuAPI.seed();
     trx = await TrxAPI.list();
-
   } catch (err) {
     console.error('Database bermasalah:', err);
-
-    // Gunakan menu bawaan agar aplikasi tetap interaktif
     menu = DEFAULT_MENU.map((p, i) => ({
-      id: 'local-' + (i + 1),
-      name: p.nama,
-      price: p.harga,
-      cat: p.kategori,
-      img: p.foto_url,
-      ok: true
+      id: 'local-' + (i + 1), name: p.nama, price: p.harga,
+      cat: p.kategori, img: p.foto_url, ok: true,
     }));
-
     trx = [];
   }
-
-  // Tetap tampilkan produk dan keranjang
   renderProducts();
   renderCart();
 }
-
 /* ========== 5. TAMPILAN UMUM ========== */
 
 /* --- Gambar produk: coba .jpg → .jpeg → .png, kalau gagal tampilkan ☕ --- */
@@ -403,7 +379,7 @@ async function finish(m, paid) {
     view('done');
   } catch (err) {
     console.error('Gagal menyimpan transaksi:', err);
-    alert('Transaksi gagal disimpan. Silakan coba lagi.');
+       alert('Transaksi gagal disimpan: ' + err.message);
   }
 }
 
