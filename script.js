@@ -242,7 +242,7 @@ const cartList  = () => Object.entries(cart).map(([id, q]) => ({ p: menu.find(m 
 const cartTotal = () => cartList().reduce((s, x) => s + x.p.price * x.q, 0);
 
 function renderProducts() {
-  const list = menu.filter(p => p.cat === cat);
+  const list = menu.filter(p => cat === 'Semua' || p.cat === cat);
   $('#products').innerHTML = list.map(p => `
     <button class="prod ${p.ok ? '' : 'off'}" data-id="${p.id}">
       ${cart[p.id] ? `<div class="qty">${cart[p.id]}</div>` : ''}
